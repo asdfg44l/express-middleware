@@ -2,6 +2,17 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+app.use((req, res, next) => {
+    let start = new Date()
+    let localeString = start.toLocaleString('eu-US')
+    res.on('finish', () => {
+        let finish = new Date()
+        let timeUse = finish - start
+        console.log(`${localeString} | ${req.method} from ${req.path} | total time: ${timeUse}ms` )
+    })
+    return next()
+})
+
 app.get('/', (req, res) => {
   res.send('列出全部 Todo')
 })
